@@ -85,7 +85,7 @@ module bsg_manycore_hetero_socket
   `HETERO_TYPE_MACRO(0,bsg_manycore_proc_vanilla) else
   `HETERO_TYPE_MACRO(1,bsg_manycore_gather_scatter) else
   `HETERO_TYPE_MACRO(2,bsg_manycore_accel_default) else
-  `HETERO_TYPE_MACRO(3,bsg_manycore_accel_default) else
+  `HETERO_TYPE_MACRO(3,manycore_drlp) else
   `HETERO_TYPE_MACRO(4,bsg_manycore_accel_default) else
   `HETERO_TYPE_MACRO(5,bsg_manycore_accel_default) else
   `HETERO_TYPE_MACRO(6,bsg_manycore_accel_default) else

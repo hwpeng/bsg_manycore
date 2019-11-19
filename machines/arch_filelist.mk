@@ -163,3 +163,13 @@ VSOURCES += $(BSG_MANYCORE_DIR)/v/bsg_manycore_endpoint_standard.v
 VSOURCES += $(BSG_MANYCORE_DIR)/v/bsg_manycore_lock_ctrl.v
 VSOURCES += $(BSG_MANYCORE_DIR)/v/bsg_1hold.v
 VSOURCES += $(BSG_MANYCORE_DIR)/v/bsg_manycore_link_sif_tieoff.v
+
+VSOURCES += $(BASEJUMP_STL_DIR)/bsg_mem/bsg_mem_1r1w_sync_synth.v
+VSOURCES += $(DRLP_DIR)/float/manycore_drlp.v
+VSOURCES += $(DRLP_DIR)/float/drlp_cfg.v
+VSOURCES += $(DRLP_DIR)/float/drlp_float.v
+VSOURCES += $(DRLP_DIR)/float/drlp_fsm_float.v
+VSOURCES += $(DRLP_DIR)/float/drlp_pe_float.v
+VSOURCES += $(DRLP_DIR)/float/drlp_rd_buffer_float.v
+VSOURCES += $(DRLP_DIR)/float/drlp_relu.v
+VSOURCES += $(DRLP_DIR)/float/drlp_sld_rf_float.v
