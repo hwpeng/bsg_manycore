@@ -135,3 +135,4 @@ VSOURCES += $(DRLP_DIR)/v/drlp_r_buffer_float.v
 VSOURCES += $(DRLP_DIR)/v/drlp_relu.v
 VSOURCES += $(DRLP_DIR)/v/drlp_sld_rf_float.v
 VSOURCES += $(DRLP_DIR)/v/drlp_seq_index.sv
+VSOURCES += $(DRLP_DIR)/v/rmem_debug.v
