@@ -7,4 +7,3 @@ coremark-top
 coremark/coremark
 lfs.c
 *.touchfile
-dramsim3epoch.json
