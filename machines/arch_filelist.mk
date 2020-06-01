@@ -164,7 +164,6 @@ VSOURCES += $(BSG_MANYCORE_DIR)/v/bsg_manycore_lock_ctrl.v
 VSOURCES += $(BSG_MANYCORE_DIR)/v/bsg_1hold.v
 VSOURCES += $(BSG_MANYCORE_DIR)/v/bsg_manycore_link_sif_tieoff.v
 
-# VSOURCES += $(BASEJUMP_STL_DIR)/bsg_mem/bsg_mem_1r1w_sync_synth.v
 VSOURCES += $(DRLP_DIR)/v/manycore_drlp.v
 VSOURCES += $(DRLP_DIR)/v/drlp_manycore_top.v
 VSOURCES += $(DRLP_DIR)/v/drlp_fsm_manycore.v
@@ -174,5 +173,15 @@ VSOURCES += $(DRLP_DIR)/v/drlp_r_buffer_float.v
 VSOURCES += $(DRLP_DIR)/v/drlp_relu.v
 VSOURCES += $(DRLP_DIR)/v/drlp_sld_rf_float.v
 VSOURCES += $(DRLP_DIR)/v/drlp_seq_index.sv
-VSOURCES += $(DRLP_DIR)/v/rmem_debug.v
 VSOURCES += $(DRLP_DIR)/v/uram_1r1w_sync.v
+# new master and slave drlp settings
+VSOURCES += $(BSG_MANYCORE_DIR)/v/bsg_manycore_drlp_master_tile.v
+VSOURCES += $(BSG_MANYCORE_DIR)/v/bsg_manycore_drlp_slave_tile.v
+VSOURCES += $(DRLP_DIR)/v/drlp_ms_pe.v
+VSOURCES += $(DRLP_DIR)/v/master/manycore_drlp_master.v
+VSOURCES += $(DRLP_DIR)/v/master/drlp_master.v
+VSOURCES += $(DRLP_DIR)/v/master/drlp_master_fsm.v
+VSOURCES += $(DRLP_DIR)/v/master/drlp_master_wmem.v
+VSOURCES += $(DRLP_DIR)/v/slave/manycore_drlp_slave.v
+VSOURCES += $(DRLP_DIR)/v/slave/drlp_slave.v
+VSOURCES += $(DRLP_DIR)/v/slave/drlp_slave_fsm.v
