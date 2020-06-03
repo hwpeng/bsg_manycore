@@ -173,44 +173,83 @@ module bsg_manycore
         end
     end
 
-   for (r = IO_row_idx_p+1; r < num_tiles_y_p-1; r = r+1)
+   for (r = IO_row_idx_p+1; r < num_tiles_y_p; r = r+1)
      begin: y
-        for (c = 0; c < num_tiles_x_p; c=c+1)
-          begin: x
-            bsg_manycore_tile
-              #(
-                .dmem_size_p     (dmem_size_p),
-                .vcache_size_p (vcache_size_p),
-                .icache_entries_p(icache_entries_p),
-                .icache_tag_width_p(icache_tag_width_p),
-                .x_cord_width_p(x_cord_width_lp),
-                .y_cord_width_p(y_cord_width_lp),
-                .data_width_p(data_width_p),
-                .addr_width_p(addr_width_p),
-                .load_id_width_p(load_id_width_p),
-                .epa_byte_addr_width_p(epa_byte_addr_width_p),
-                .dram_ch_addr_width_p( dram_ch_addr_width_p),
-                .dram_ch_start_col_p ( dram_ch_start_col_p ),
-                .hetero_type_p( hetero_type_vec_p[r][c] ),
-                .debug_p(debug_p)
-                ,.branch_trace_en_p(branch_trace_en_p)
-                ,.num_tiles_x_p(num_tiles_x_p)
-                ,.vcache_block_size_in_words_p(vcache_block_size_in_words_p)
-                ,.vcache_sets_p(vcache_sets_p)
-              )
-            tile
-              (
-                .clk_i(clk_i),
-                .reset_i(reset_i_r[reset_depth_p-1][r][c]),
+        if (r < num_tiles_y_p-1) begin
+          for (c = 0; c < num_tiles_x_p; c=c+1)
+            begin: x
+              bsg_manycore_tile
+                #(
+                  .dmem_size_p     (dmem_size_p),
+                  .vcache_size_p (vcache_size_p),
+                  .icache_entries_p(icache_entries_p),
+                  .icache_tag_width_p(icache_tag_width_p),
+                  .x_cord_width_p(x_cord_width_lp),
+                  .y_cord_width_p(y_cord_width_lp),
+                  .data_width_p(data_width_p),
+                  .addr_width_p(addr_width_p),
+                  .load_id_width_p(load_id_width_p),
+                  .epa_byte_addr_width_p(epa_byte_addr_width_p),
+                  .dram_ch_addr_width_p( dram_ch_addr_width_p),
+                  .dram_ch_start_col_p ( dram_ch_start_col_p ),
+                  .hetero_type_p( hetero_type_vec_p[r][c] ),
+                  .debug_p(debug_p)
+                  ,.branch_trace_en_p(branch_trace_en_p)
+                  ,.num_tiles_x_p(num_tiles_x_p)
+                  ,.vcache_block_size_in_words_p(vcache_block_size_in_words_p)
+                  ,.vcache_sets_p(vcache_sets_p)
+                )
+              tile
+                (
+                  .clk_i(clk_i),
+                  .reset_i(reset_i_r[reset_depth_p-1][r][c]),
 
-                .link_in(link_in[r][c]),
-                .link_out(link_out[r][c]),
+                  .link_in(link_in[r][c]),
+                  .link_out(link_out[r][c]),
 
-                .my_x_i(x_cord_width_lp'(c)),
-                .my_y_i(y_cord_width_lp'(r))
-              );
-          end
-     end
+                  .my_x_i(x_cord_width_lp'(c)),
+                  .my_y_i(y_cord_width_lp'(r))
+                );
+            end
+        end
+        else begin
+          for (c = 0; c < 2; c=c+1)
+            begin: x
+              bsg_manycore_tile
+                #(
+                  .dmem_size_p     (dmem_size_p),
+                  .vcache_size_p (vcache_size_p),
+                  .icache_entries_p(icache_entries_p),
+                  .icache_tag_width_p(icache_tag_width_p),
+                  .x_cord_width_p(x_cord_width_lp),
+                  .y_cord_width_p(y_cord_width_lp),
+                  .data_width_p(data_width_p),
+                  .addr_width_p(addr_width_p),
+                  .load_id_width_p(load_id_width_p),
+                  .epa_byte_addr_width_p(epa_byte_addr_width_p),
+                  .dram_ch_addr_width_p( dram_ch_addr_width_p),
+                  .dram_ch_start_col_p ( dram_ch_start_col_p ),
+                  .hetero_type_p( hetero_type_vec_p[r][c] ),
+                  .debug_p(debug_p)
+                  ,.branch_trace_en_p(branch_trace_en_p)
+                  ,.num_tiles_x_p(num_tiles_x_p)
+                  ,.vcache_block_size_in_words_p(vcache_block_size_in_words_p)
+                  ,.vcache_sets_p(vcache_sets_p)
+                )
+              tile
+                (
+                  .clk_i(clk_i),
+                  .reset_i(reset_i_r[reset_depth_p-1][r][c]),
+
+                  .link_in(link_in[r][c]),
+                  .link_out(link_out[r][c]),
+
+                  .my_x_i(x_cord_width_lp'(c)),
+                  .my_y_i(y_cord_width_lp'(r))
+                );
+            end
+        end
+     end  
 
 logic all_pe_ready, all_slave_done;
 logic [num_tiles_x_p-2:0] pe_ready;
@@ -221,9 +260,11 @@ logic [32*16-1:0] all_bias;
 logic sld;
 logic [12:0] imem_r_addr;
 logic dw_wgt_start;
-assign all_pe_ready = &pe_ready;
-assign all_slave_done = &slave_done;
-for (c = 0; c < num_tiles_x_p; c=c+1) begin: drlp
+// assign all_pe_ready = &pe_ready;
+// assign all_slave_done = &slave_done;
+assign all_pe_ready = pe_ready[num_tiles_x_p-2];
+assign all_slave_done = slave_done[num_tiles_x_p-2];
+for (c = 2; c < num_tiles_x_p; c=c+1) begin: drlp
     if (c == num_tiles_x_p-1) begin: master
         bsg_manycore_drlp_master_tile
           #(
